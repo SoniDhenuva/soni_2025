@@ -1,9 +1,10 @@
-# CSP course meta data
+#  hacks meta data
 Sprint1:
   title: Tools and Software Development Processes
   description: By the end of Weeks 0-3, students will have gained practical experience in blogging, coding with Jupyter Notebooks, and GitHub Pages; learning will begin with Linux, Python, Markdown, HTML, and JavaScript. Students will establish a foundation using essential tools and software development processes to support their coding journey.
   start: 0
   end: 3
+  
 Sprint2:
   title: Web Development Layers
   description: During Weeks 4-7, students will delve into the layers used in Web Development. They will learn about the key components that make up websites, including the Frontend, Backend, and Data layers. The main focus of this Sprint is to empower students to explore the development and deployment of a simple website. Throughout this period, there will be several lectures that provide ideas and concepts on how to build different components of a website, including sending and receiving data from a backend server.

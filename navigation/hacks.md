@@ -2,7 +2,7 @@
 layout: schedule
 title: Hacks
 units: "1,2,3,4"
-course: compsci
+course: hacks
 permalink: /hacks/
 ---
 
