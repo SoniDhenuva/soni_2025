@@ -1,11 +1,11 @@
 ---
 layout: schedule
 title: Hacks
-units: "1,2,3,4"
+units: "1,2,3,4,5,6,7,8,9"
+search_exclude: true
 course: hacks
-permalink: /hacks/
+menu: nav/home.html
 ---
-
 
 
 
