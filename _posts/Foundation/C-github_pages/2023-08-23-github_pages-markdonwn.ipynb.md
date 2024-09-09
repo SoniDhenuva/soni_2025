@@ -3,7 +3,7 @@ layout: post
 title: Snake Game 
 description: Learn how to set up utterances for your blog. Utterances is a tool that allows you to have comments on your blog posts.
 categories: ['DevOps', 'Github Pages']
-permalink: /github/pages/utterances
+permalink: /github/pages/markdown
 author: Trevor Huang
 menu: nav/github_pages.html
 toc: True
