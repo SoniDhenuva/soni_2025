@@ -213,7 +213,7 @@ hide: true
 
 ## MY WONDERFUL PARTNERS
 
-#### (put picture)
+<img src="{{site.baseurl}}/images/grouppic.PNG">
 
 <br>
 <br>
