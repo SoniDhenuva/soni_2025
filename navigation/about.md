@@ -4,9 +4,6 @@ title: About
 permalink: /about/
 ---
 
-Creator of Student 2025
-
-# About me
 ## Intro
 <p>Hi, My name is Sonika Dhenuva Konda, I go by Soni. I am in 10th grade and 15 years old.</p>
 <p>I joined a few clubs at school like Robotics & Debate. I also own my own small buisness of selling jewlry</p>
