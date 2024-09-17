@@ -74,123 +74,353 @@ button.addEventListener('click', function() {
 
 </html>
 
-# Playing with Jupyter Notebooks and Python
+# Javascript Calculator
 
-## Emoji Playground
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calculator-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 5px;
+            max-width: 220px;
+            margin: 20px auto;
+        }
+        .calculator-output {
+            grid-column: span 4;
+            border-radius: 10px;
+            padding: 0.5em;
+            font-size: 24px;
+            border: 2px solid black;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Right-justify result */
+            box-sizing: border-box;
+        }
+        .calculator-button {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            cursor: pointer;
+            height: 50px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .calculator-button:hover {
+            background-color: #d0d0d0;
+        }
+        .calculator-clear {
+            grid-column: span 4;
+            background-color: #ff6666;
+            color: white;
+        }
+        .calculator-equals {
+            grid-column: span 4;
+            background-color: #66cc66;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Add a container for the animation -->
+<div id="animation">
+    <div class="calculator-container">
+        <!-- Result -->
+        <div class="calculator-output" id="output">0</div>
+        <!-- Row 1 -->
+        <div class="calculator-button calculator-number">1</div>
+        <div class="calculator-button calculator-number">2</div>
+        <div class="calculator-button calculator-number">3</div>
+        <div class="calculator-button calculator-operation">+</div>
+        <!-- Row 2 -->
+        <div class="calculator-button calculator-number">4</div>
+        <div class="calculator-button calculator-number">5</div>
+        <div class="calculator-button calculator-number">6</div>
+        <div class="calculator-button calculator-operation">-</div>
+        <!-- Row 3 -->
+        <div class="calculator-button calculator-number">7</div>
+        <div class="calculator-button calculator-number">8</div>
+        <div class="calculator-button calculator-number">9</div>
+        <div class="calculator-button calculator-operation">*</div>
+        <!-- Row 4 -->
+        <div class="calculator-button calculator-clear">A/C</div>
+        <div class="calculator-button calculator-number">0</div>
+        <div class="calculator-button calculator-number">.</div>
+        <div class="calculator-button calculator-equals">=</div>
+    </div>
+</div>
+
+<!-- JavaScript (JS) implementation of the calculator -->
 <script>
-from emoji import emojize 
-print(emojize(":thumbs_up: Python is awesome! :grinning_face:"))
+    var firstNumber = null;
+    var operator = null;
+    var nextReady = true;
+    const output = document.getElementById("output");
+    const numbers = document.querySelectorAll(".calculator-number");
+    const operations = document.querySelectorAll(".calculator-operation");
+    const clear = document.querySelector(".calculator-clear");
+    const equals = document.querySelector(".calculator-equals");
+
+    // Number buttons listener
+    numbers.forEach(button => {
+        button.addEventListener("click", function() {
+            number(button.textContent);
+        });
+    });
+
+    // Number action
+    function number(value) {
+        if (value != ".") {
+            if (nextReady) {
+                output.textContent = value;
+                nextReady = value != "0";
+            } else {
+                output.textContent += value;
+            }
+        } else {
+            if (!output.textContent.includes(".")) {
+                output.textContent += value;
+            }
+        }
+        nextReady = false;
+    }
+
+    // Operation buttons listener
+    operations.forEach(button => {
+        button.addEventListener("click", function() {
+            operation(button.textContent);
+        });
+    });
+
+    // Operator action
+    function operation(choice) {
+        if (firstNumber === null) {
+            firstNumber = parseFloat(output.textContent);
+            operator = choice;
+            nextReady = true;
+        } else {
+            firstNumber = calculate(firstNumber, parseFloat(output.textContent));
+            operator = choice;
+            output.textContent = firstNumber.toString();
+            nextReady = true;
+        }
+    }
+
+    // Calculator
+    function calculate(first, second) {
+        let result = 0;
+        switch (operator) {
+            case "+":
+                result = first + second;
+                break;
+            case "-":
+                result = first - second;
+                break;
+            case "*":
+                result = first * second;
+                break;
+            case "/":
+                result = second === 0 ? "Error" : first / second;
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    // Equals button listener
+    equals.addEventListener("click", function() {
+        equal();
+    });
+
+    // Equal action
+    function equal() {
+        firstNumber = calculate(firstNumber, parseFloat(output.textContent));
+        output.textContent = firstNumber.toString();
+        nextReady = true;
+    }
+
+    // Clear button listener
+    clear.addEventListener("click", function() {
+        clearCalc();
+    });
+
+    // A/C action
+    function clearCalc() {
+        firstNumber = null;
+        output.textContent = "0";
+        nextReady = true;
+    }
 </script>
 
-## Extracting Data
+<!-- Vanta animations just for fun, load JS onto the page -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.119.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.3/dist/vanta.halo.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.3/dist/vanta.birds.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.3/dist/vanta.net.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.3/dist/vanta.rings.min.js"></script>
 
 <script>
-from newspaper import Article
-from IPython.display import display, Markdown
+    var vantaInstances = {
+        halo: VANTA.HALO,
+        birds: VANTA.BIRDS,
+        net: VANTA.NET,
+        rings: VANTA.RINGS
+    };
 
+    var vantaInstance = vantaInstances[Object.keys(vantaInstances)[Math.floor(Math.random() * Object.keys(vantaInstances).length)]];
 
-urls = ["http://cnn.com/2023/03/29/entertainment/the-mandalorian-episode-5-recap/index.html", 
-        "https://www.cnn.com/2023/06/09/entertainment/jurassic-park-anniversary/index.html"]
-
-for url in urls:
-    article = Article(url)
-    article.download()
-    article.parse()
-    # Jupyter Notebook Display
-    # print(article.title)
-    display(Markdown(article.title)) # Jupyter display only
-    display(Markdown(article.text)) # Jupyter display only
-    print("\n")
-
-import wikipedia 
-from IPython.display import display, Markdown # add for Jupyter
-
-terms = ["Python (programming language)", "JavaScript"]
-for term in terms:
-    # Search for a page 
-    result = wikipedia.search(term)
-    # Get the summary of the first result
-    summary = wikipedia.summary(result[0])
-    print(term) 
-    # print(summary) # console display
-    display(Markdown(summary)) # Jupyter display
+    vantaInstance({
+        el: "#animation",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false
+    });
 </script>
+</body>
+</html>
 
-## Inpecting a function
+## Cookie Clicker Game
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .game-container {
+            text-align: center;
+        }
+        .cookie-button {
+            width: 150px;
+            height: 150px;
+            border: none;
+            border-radius: 10px;
+            background: url('images/cookie.jpg') no-repeat center center;
+            background-size: cover;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        .cookie-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .cookie-count {
+            font-size: 36px;
+            margin: 20px 0;
+        }
+        .buy-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .buy-button:hover {
+            background-color: #45a049;
+        }
+        .info {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <button id="cookieButton" class="cookie-button"></button>
+    <div id="cookieCount" class="cookie-count">Cookies: 0</div>
+    <div id="productionRate" class="info">Cookies per second: 0</div>
+    <div id="upgradeSection">
+        <div class="info">
+            <button id="buyGrandma" class="buy-button">Buy Grandma: +1 Cookie/Second (Cost: 50 Cookies)</button>
+            <button id="buyFactory" class="buy-button">Buy Factory: +5 Cookies/Second (Cost: 500 Cookies)</button>
+        </div>
+    </div>
+</div>
+
 <script>
-import inspect 
-from newspaper import Article
+    let cookieCount = 0;
+    let cookiesPerClick = 1;
+    let cookiesPerSecond = 0;
+    const cookieButton = document.getElementById('cookieButton');
+    const cookieCountDisplay = document.getElementById('cookieCount');
+    const productionRateDisplay = document.getElementById('productionRate');
+    const buyGrandmaButton = document.getElementById('buyGrandma');
+    const buyFactoryButton = document.getElementById('buyFactory');
 
-# inspect newspaper Article function
-print(inspect.getsource(Article))
+    // Update the display for cookies and production rate
+    function updateDisplay() {
+        cookieCountDisplay.textContent = `Cookies: ${cookieCount}`;
+        productionRateDisplay.textContent = `Cookies per second: ${cookiesPerSecond}`;
+    }
+
+    // Click event for the cookie button
+    cookieButton.addEventListener('click', () => {
+        cookieCount += cookiesPerClick;
+        updateDisplay();
+    });
+
+    // Purchase Grandma
+    buyGrandmaButton.addEventListener('click', () => {
+        const grandmaCost = 50;
+        if (cookieCount >= grandmaCost) {
+            cookieCount -= grandmaCost;
+            cookiesPerSecond += 1;
+            updateDisplay();
+            buyGrandmaButton.textContent = `Buy Grandma: +${cookiesPerSecond} Cookie/Second (Cost: ${50})`;
+        } else {
+            alert('Not enough cookies for Grandma!');
+        }
+    });
+
+    // Purchase Factory
+    buyFactoryButton.addEventListener('click', () => {
+        const factoryCost = 500;
+        if (cookieCount >= factoryCost) {
+            cookieCount -= factoryCost;
+            cookiesPerSecond += 5;
+            updateDisplay();
+            buyFactoryButton.textContent = `Buy Factory: +${cookiesPerSecond} Cookies/Second (Cost: ${500})`;
+        } else {
+            alert('Not enough cookies for Factory!');
+        }
+    });
+
+    // Increase cookie count based on production rate
+    function increaseCookies() {
+        cookieCount += cookiesPerSecond;
+        updateDisplay();
+    }
+
+    // Increase cookies every second based on production rate
+    setInterval(increaseCookies, 1000);
 </script>
 
-## Python Data Types
-<script>
-import sys
-from typing import Union
-
-# Define types for mean function, trying to analyze input possibilities
-Number = Union[int, float]  # Number can be either int or float type
-Numbers = list[Number] # Numbers is a list of Number types
-Scores = Union[Number, Numbers] # Scores can be single or multiple 
-
-def mean(scores: Scores, method: int = 1) -> float:
-    """
-    Calculate the mean of a list of scores.
-    
-    Average and Average2 are hidden functions performing mean algorithm
-
-    If a single score is provided in scores, it is returned as the mean.
-    If a list of scores is provided, the average is calculated and returned.
-    """
-    
-    def average(scores): 
-        """Calculate the average of a list of scores using a Python for loop with rounding."""
-        sum = 0
-        len = 0
-        for score in scores:
-            if isinstance(score, Number):
-                sum += score
-                len += 1
-            else:
-                print("Bad data: " + str(score) + " in " + str(scores))
-                sys.exit()
-        return sum / len
-    
-    def average2(scores):
-        """Calculate the average of a list of scores using the built-in sum() function with rounding."""
-        return sum(scores) / len(scores)
-
-    # test to see if scores is  a list of numbers
-    if isinstance(scores, list):
-        if method == 1:  
-            # long method
-            result = average(scores)
-        else:
-            # built in method
-            result = average2(scores)
-        return round(result + 0.005, 2)
-    
-    return scores # case where scores is a single valu
-
-# try with one number
-singleScore = 100
-print("Print test data: " + str(singleScore))  # concat data for single line
-print("Mean of single number: " + str(mean(singleScore)))
-
-print()
-
-# define a list of numbers
-testScores = [90.5, 100, 85.4, 88]
-print("Print test data: " + str(testScores))
-print("Average score, loop method: " + str(mean(testScores)))
-print("Average score, function method: " +  str(mean(testScores, 2)))
-
-print()
-
-badData = [100, "NaN", 90]
-print("Print test data: " + str(badData))
-print("Mean with bad data: " + str(mean(badData)))
-</script>
-
+</body>
+</html>
