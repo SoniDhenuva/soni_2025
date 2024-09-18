@@ -312,23 +312,19 @@ button.addEventListener('click', function() {
             text-align: center;
         }
         .cookie-button {
-            width: 150px;
-            height: 150px;
-            border: none;
-            border-radius: 10px;
-            background: url('images/cookie.jpg') no-repeat center center;
-            background-size: cover;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.3s;
+            transition: transform 0.2s;
         }
         .cookie-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: scale(1.1);
+        }
+        .cookie-emoji {
+            font-size: 150px; /* Adjust the size of the emoji here */
         }
         .cookie-count {
             font-size: 36px;
             margin: 20px 0;
+            color: white; /* Set text color to white */
         }
         .buy-button {
             padding: 10px 20px;
@@ -336,7 +332,7 @@ button.addEventListener('click', function() {
             border: none;
             border-radius: 5px;
             background-color: #4caf50;
-            color: #fff;
+            color: white; /* Set button text color to white */
             cursor: pointer;
             margin: 10px;
             transition: background-color 0.3s;
@@ -347,13 +343,16 @@ button.addEventListener('click', function() {
         .info {
             font-size: 16px;
             margin: 10px 0;
+            color: white; /* Set info text color to white */
         }
     </style>
 </head>
 <body>
 
 <div class="game-container">
-    <button id="cookieButton" class="cookie-button"></button>
+    <div id="cookieButton" class="cookie-button" onclick="cookieClick()">
+        <span class="cookie-emoji">🍪</span>
+    </div>
     <div id="cookieCount" class="cookie-count">Cookies: 0</div>
     <div id="productionRate" class="info">Cookies per second: 0</div>
     <div id="upgradeSection">
@@ -368,57 +367,48 @@ button.addEventListener('click', function() {
     let cookieCount = 0;
     let cookiesPerClick = 1;
     let cookiesPerSecond = 0;
-    const cookieButton = document.getElementById('cookieButton');
-    const cookieCountDisplay = document.getElementById('cookieCount');
-    const productionRateDisplay = document.getElementById('productionRate');
-    const buyGrandmaButton = document.getElementById('buyGrandma');
-    const buyFactoryButton = document.getElementById('buyFactory');
+    let grandmaCost = 50;
+    let factoryCost = 500;
 
-    // Update the display for cookies and production rate
     function updateDisplay() {
-        cookieCountDisplay.textContent = `Cookies: ${cookieCount}`;
-        productionRateDisplay.textContent = `Cookies per second: ${cookiesPerSecond}`;
+        document.getElementById('cookieCount').textContent = `Cookies: ${cookieCount}`;
+        document.getElementById('productionRate').textContent = `Cookies per second: ${cookiesPerSecond}`;
+        document.getElementById('buyGrandma').textContent = `Buy Grandma: +1 Cookie/Second (Cost: ${grandmaCost} Cookies)`;
+        document.getElementById('buyFactory').textContent = `Buy Factory: +5 Cookies/Second (Cost: ${factoryCost} Cookies)`;
     }
 
-    // Click event for the cookie button
-    cookieButton.addEventListener('click', () => {
+    function cookieClick() {
         cookieCount += cookiesPerClick;
         updateDisplay();
-    });
+    }
 
-    // Purchase Grandma
-    buyGrandmaButton.addEventListener('click', () => {
-        const grandmaCost = 50;
+    document.getElementById('buyGrandma').onclick = function() {
         if (cookieCount >= grandmaCost) {
             cookieCount -= grandmaCost;
             cookiesPerSecond += 1;
+            grandmaCost = Math.floor(grandmaCost * 1.15); // Increase cost for next Grandma
             updateDisplay();
-            buyGrandmaButton.textContent = `Buy Grandma: +${cookiesPerSecond} Cookie/Second (Cost: ${50})`;
         } else {
             alert('Not enough cookies for Grandma!');
         }
-    });
+    };
 
-    // Purchase Factory
-    buyFactoryButton.addEventListener('click', () => {
-        const factoryCost = 500;
+    document.getElementById('buyFactory').onclick = function() {
         if (cookieCount >= factoryCost) {
             cookieCount -= factoryCost;
             cookiesPerSecond += 5;
+            factoryCost = Math.floor(factoryCost * 1.15); // Increase cost for next Factory
             updateDisplay();
-            buyFactoryButton.textContent = `Buy Factory: +${cookiesPerSecond} Cookies/Second (Cost: ${500})`;
         } else {
             alert('Not enough cookies for Factory!');
         }
-    });
+    };
 
-    // Increase cookie count based on production rate
     function increaseCookies() {
         cookieCount += cookiesPerSecond;
         updateDisplay();
     }
 
-    // Increase cookies every second based on production rate
     setInterval(increaseCookies, 1000);
 </script>
 
