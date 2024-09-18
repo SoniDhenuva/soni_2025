@@ -76,7 +76,6 @@ button.addEventListener('click', function() {
 
 # Javascript Calculator
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -152,7 +151,7 @@ button.addEventListener('click', function() {
         <div class="calculator-button calculator-number">7</div>
         <div class="calculator-button calculator-number">8</div>
         <div class="calculator-button calculator-number">9</div>
-        <div class="calculator-button calculator-operation">*</div>
+        <div class="calculator-button calculator-operation">/</div> <!-- Division button -->
         <!-- Row 4 -->
         <div class="calculator-button calculator-clear">A/C</div>
         <div class="calculator-button calculator-number">0</div>
@@ -313,13 +312,14 @@ button.addEventListener('click', function() {
         }
         .cookie-button {
             cursor: pointer;
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 150px; /* Size of the cookie */
             transition: transform 0.2s;
         }
         .cookie-button:hover {
             transform: scale(1.1);
-        }
-        .cookie-emoji {
-            font-size: 150px; /* Adjust the size of the emoji here */
         }
         .cookie-count {
             font-size: 36px;
@@ -350,9 +350,9 @@ button.addEventListener('click', function() {
 <body>
 
 <div class="game-container">
-    <div id="cookieButton" class="cookie-button" onclick="cookieClick()">
-        <span class="cookie-emoji">🍪</span>
-    </div>
+    <button id="cookieButton" class="cookie-button" onclick="cookieClick()">
+        🍪
+    </button>
     <div id="cookieCount" class="cookie-count">Cookies: 0</div>
     <div id="productionRate" class="info">Cookies per second: 0</div>
     <div id="upgradeSection">
@@ -373,8 +373,8 @@ button.addEventListener('click', function() {
     function updateDisplay() {
         document.getElementById('cookieCount').textContent = `Cookies: ${cookieCount}`;
         document.getElementById('productionRate').textContent = `Cookies per second: ${cookiesPerSecond}`;
-        document.getElementById('buyGrandma').textContent = `Buy Grandma: +1 Cookie/Second (Cost: ${grandmaCost} Cookies)`;
-        document.getElementById('buyFactory').textContent = `Buy Factory: +5 Cookies/Second (Cost: ${factoryCost} Cookies)`;
+        document.getElementById('buyGrandma').textContent = `Buy Grandma: +1 Cookie/Second (Cost: ${grandmaCost} Cookies)👵`;
+        document.getElementById('buyFactory').textContent = `Buy Factory: +5 Cookies/Second (Cost: ${factoryCost} Cookies) 🏭`;
     }
 
     function cookieClick() {
@@ -410,6 +410,159 @@ button.addEventListener('click', function() {
     }
 
     setInterval(increaseCookies, 1000);
+</script>
+
+</body>
+</html>
+
+<br>
+<br>
+
+## JavaScript API
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iTunes Search</title>
+    <style>
+      body {
+        background-color: #333; /* Dark background for contrast */
+      }
+      table {
+        width: 100%; /* Full width table */
+        border-collapse: collapse; /* Collapses borders */
+      }
+      th, td {
+        border: 1px solid #fff; /* White border for visibility */
+        padding: 8px; /* Padding for cells */
+        text-align: left; /* Left-align text */
+        color: white; /* Change text color to white */
+      }
+      th {
+        background-color: #444; /* Darker background for header */
+      }
+      tr:nth-child(even) {
+        background-color: #555; /* Lighten even rows for contrast */
+      }
+      tr:hover {
+        background-color: #666; /* Highlight on hover */
+      }
+    </style>
+</head>
+<body>
+
+<div>
+  <input type="text" id="filterInput" placeholder="Enter iTunes filter">
+  <button onclick="fetchData()">Search</button>
+</div>
+
+<!-- HTML table fragment for page -->
+<table>
+  <thead>
+    <tr>
+      <th>Artist</th>
+      <th>Track</th>
+      <th>Images</th>
+      <th>Preview</th>
+    </tr>
+  </thead>
+  <tbody id="result">
+    <!-- generated rows -->
+  </tbody>
+</table>
+
+<!-- Script is laid out in a sequence (no function) and will execute when the page is loaded -->
+<script>
+  // prepare HTML result container for new output
+  const resultContainer = document.getElementById("result");
+
+  // function to fetch data based on user input
+  function fetchData() {
+    // clear previous results
+    resultContainer.innerHTML = "";
+
+    // get user input
+    const filterInput = document.getElementById("filterInput");
+    const filter = filterInput.value;
+
+    // prepare fetch options
+    const url = "https://itunes.apple.com/search?term=" + encodeURIComponent(filter);
+    const headers = {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'default',
+      credentials: 'omit',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+
+    // fetch the API
+    fetch(url, headers)
+      .then(response => {
+        // check for response errors
+        if (response.status !== 200) {
+          const errorMsg = 'Database response error: ' + response.status;
+          console.log(errorMsg);
+          const tr = document.createElement("tr");
+          const td = document.createElement("td");
+          td.innerHTML = errorMsg;
+          tr.appendChild(td);
+          resultContainer.appendChild(tr);
+          return;
+        }
+        // valid response will have JSON data
+        response.json().then(data => {
+          console.log(data);
+
+          // Music data
+          for (const row of data.results) {
+            console.log(row);
+
+            // tr for each row
+            const tr = document.createElement("tr");
+            // td for each column
+            const artist = document.createElement("td");
+            const track = document.createElement("td");
+            const image = document.createElement("td");
+            const preview = document.createElement("td");
+
+            // data is specific to the API
+            artist.innerHTML = row.artistName;
+            track.innerHTML = row.trackName; 
+            // create preview image
+            const img = document.createElement("img");
+            img.src = row.artworkUrl100;
+            image.appendChild(img);
+            // create preview player
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            const source = document.createElement("source");
+            source.src = row.previewUrl;
+            source.type = "audio/mp4";
+            audio.appendChild(source);
+            preview.appendChild(audio);
+
+            // this builds td's into tr
+            tr.appendChild(artist);
+            tr.appendChild(track);
+            tr.appendChild(image);
+            tr.appendChild(preview);
+
+            // add HTML to container
+            resultContainer.appendChild(tr);
+          }
+        })
+      })
+      .catch(err => {
+        console.error(err);
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.innerHTML = err;
+        tr.appendChild(td);
+        resultContainer.appendChild(tr);
+      });
+  }
 </script>
 
 </body>
