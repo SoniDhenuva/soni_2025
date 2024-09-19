@@ -1,57 +1,16 @@
 ---
-layout: schedule
+layout: page
 title: Hacks
-units: "1,2,3,4,5,6,7,8,9"
-search_exclude: true
-course: hacks
-menu: nav/home.html
+permalink: /hacks/
 ---
 
+# Github Pages Playground
+<p>This is the Github Playground w/ Games</p>
+{%include nav/github_pages.html %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<html> 
-
-<div> 
-<strong> HELLO </strong>
-<p> Soni Dhenuva </p>
 <br>
-<button> Dont Click this </button>
-</div>
 
+# Sprint 1
+<p>This is the Sprint 1 Pair Review</p>
+{%include nav/Sprint1.html %}
 
-<div> 
-<a href="https://sallysbakingaddiction.com/strawberry-cake/"> Strawberry Cake Recipie</a>
-
-<a href="https://sallysbakingaddiction.com/the-great-pumpkin-pie-recipe/">Pumpkin Pie</a>
-<p> Which recipe do like better? </p>
-</div>
-
-
-</html>
