@@ -18,7 +18,7 @@ permalink: /about/
 
 ## My Family
 <p>Fun Fact! I was actually born in india. I moved here when I was 9 months old. My dad and mom are both from India, and I have a younger sister who is 9 years old.</p>
-<p> A lot of my family, including grandparents, aunts, uncles, and cousin are in Indian and I love to go and visit then once in a few years!</p>
+<p> A huge part of my family, including grandparents, aunts, uncles, and cousin are in Indian and I love to go and visit then once in a few years!</p>
 <img src="{{site.baseurl}}/images/india.png">
 <img src="{{site.baseurl}}/images/food.png">
 
