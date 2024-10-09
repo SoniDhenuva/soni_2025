@@ -14,6 +14,10 @@ permalink: /hacks/
 <p>This is the Sprint 1 Pair Review</p>
 {%include nav/Sprint1.html %}
 
+# Team Teach HomeWork #1
+<p># Team Teach HomeWork #1</p>
+{%include nav/teamteach1HW.html %}
+
 
 
 
