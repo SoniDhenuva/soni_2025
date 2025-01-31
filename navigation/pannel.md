@@ -189,6 +189,18 @@ def add_survey():
 
 ### **Discuss API Class (Code Block) Used to Perform GET, POST, PUT, DELETE Methods**
 - **POST Method**: Accepts the feedback data and creates a new survey entry in the database.
+```javascript
+  try {
+      const response = await fetch(`${pythonURI}/api/survey`, {
+          ...fetchOptions,
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: reviewText })
+      });
+  } catch (error) {
+      console.error("Error submitting feedback:", error);
+  }
+  ```
 - **GET Method**: Not currently implemented, but could be used to retrieve all survey data.
 - **PUT Method**: Would be used for updating an existing survey response.
 - **DELETE Method**: Deletes a survey response from the database.
@@ -199,8 +211,44 @@ def add_survey():
 The `add_survey()` method includes:
 - **Sequencing**: The steps to validate data, create a new survey, and return the response are executed in order.
 - **Selection**: Conditional checks are made to ensure that the required fields (`message`, `user_id`) are present and that the user exists.
-- **Iteration**: If needed, iteration could be used to perform operations on multiple surveys, such as retrieving all surveys or deleting multiple surveys at once.
+```javascript
+  let reviewText = document.getElementById("review-text").value;
+            if (reviewText.trim() === "") {
+                alert("Please enter a review before submitting.");
+                return;
+            }
+            try {
+                const response = await fetch(`${pythonURI}/api/survey`, {
+                    ...fetchOptions,
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: reviewText })
+                });
+                if (response.ok) {
+                    alert("Thank you for your review!");
+                    document.getElementById("review-popup").style.display = "none";
+                    document.getElementById("review-text").value = "";
+                } else {
+                    alert("Failed to submit review. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error submitting review:", error);
+                alert("An error occurred while submitting the review. Please try again.");
+            }
+```
 
+
+- **Iteration**: If needed, iteration could be used to perform operations on multiple surveys, such as retrieving all surveys or deleting multiple surveys at once.
+```python
+def fetch_chat_history():
+    try:
+        response = requests.get(f"{BACKEND_URL}/get_chat")
+        response.raise_for_status()
+        return response.json().get("history", [])
+    except Exception as e:
+        print(f"Error fetching chat history: {e}")
+        return []
+```
 ---
 
 ### **Discuss the Parameters (Body of Request) and Return Type (JSONify) of the Function**
