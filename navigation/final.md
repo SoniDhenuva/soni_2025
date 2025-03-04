@@ -177,6 +177,7 @@ Incorrect. Flooding an account with fraudulent traffic is considered a denial-of
 | **Functionality Demonstration** | The survey feature’s ability to collect, manage, and display reviews using CRUD operations will be demonstrated through a video walkthrough. |
 
 ## 1. Input
+``` python
 @token_required()
 def post(self):
     """Create a new survey response."""
@@ -190,34 +191,83 @@ def post(self):
     survey_response = Survey(
         message=data['message'],
         user_id=current_user.id
-    ) 
+    )
+```
 
 ### What it does
+
 - request.get_json(): Captures the user’s survey response (message) as JSON input.  
 - Validation (`if not data or 'message' not in data:`): Ensures that a message is provided before proceeding.  
 - User ID association (`user_id=current_user.id`): Links the input to the authenticated user.  
 
 ## 2. **Use of List/Collection Type:**
+<br>
+
    - **Line 63:** `surveys = Survey.query.all()` retrieves a list of all survey responses from the database. This is a collection of survey objects that will be returned as a list of responses.
+   ``` python
+   # Retrieve survey by ID
+            survey_response = Survey.query.get(survey_id)
+            if not survey_response:
+                return {'message': 'Survey response not found'}, 404
+<br><br><br>
 
 ## 3. **Procedure:**
+<br>
+
    - **Procedure for Handling Survey Responses (CRUD operations):**
+   <br>
      - **POST** (`post()` method): 
        - It starts by checking if the required data (`message`) is present.
        - Then, it creates a new survey response, tries to save it, and returns the result.
+       <br>
      - **GET** (`get()` method): 
        - Retrieves a survey response by its `id` from the query parameters.
        - Returns the survey data or an error message if not found.
+       <br>
      - **DELETE** (`delete()` method): 
        - Deletes the survey with the provided ID.
+       <br>
+       ``` python
+
+       def create(self):
+        """Adds a new survey response to the database."""
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            raise IntegrityError("Survey response creation failed due to a database error.")
+
+    def read(self):
+        """Returns a dictionary representation of the survey response."""
+        return {
+            'id': self.id,
+            'message': self.message,
+            'user_id': self.user_id
+        }
+    def delete(self):
+        """Deletes the survey response from the database."""
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            raise IntegrityError("Survey response deletion failed due to a database error.")
+    ```
+<br><br>
 
 ## 4. **Algorithm:**
+<br>
+
    - **The sequence of operations in each HTTP method** forms an algorithm for handling survey data:
      - **POST**: Validate input → Create Survey object → Try saving → Return created data or error.
      - **GET**: Retrieve ID from query params → Query the database for the survey → Return survey data or error.
      - **DELETE**: Retrieve ID from query params → Locate the survey → Delete and return success or failure.
+<br><br>
 
 ## 5. **Output:**
+<br>
+
    - **In the `get()` methods**:
      - The output is a survey response (or a list of responses) that is returned as a JSON object, formatted using the `read()` method.
    - **In the `post()` method**:
@@ -232,6 +282,7 @@ def post(self):
 <br>
 
 # Self-Grading
+<br><br>
 
 | **Concept**                | **Grade** | **Notes**                                                                                                                                                   |
 |----------------------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -243,15 +294,18 @@ def post(self):
 | **Total**                   | 9/10      |                                                                                                                                                             |
 
 ---
+<br>
 
 ### Growth
 - Gained experience in providing code and algorithms for Fullstack development and Chatbots.
 - Learned how to collaborate with teammates to resolve issues.
 - Realized the importance of thorough planning before jumping into new projects (e.g., Chatbot project).
+<br>
 
 ### Areas for Improvement
 - Become more organized with tracking regular issues and burndown tasks.
 - Avoid leaving all coding to the last minute, and handle the resulting stress when things break.
+<br>
 
 ### Applying Skills to the Future
 -Will integrate skills gained into future projects, focusing on improving project workflows, enhancing team collaboration, and applying the lessons learned to more advanced systems and algorithms..
